@@ -1,0 +1,35 @@
+# Las dos APIs en local, comunicándose por HTTP igual que en AWS.
+#   docker compose up --build
+#   API en Go:   http://localhost:8080   API en Node: http://localhost:3000
+# Los secretos se leen del archivo .env (copie .env.example y complete los valores); .env no se sube a git.
+# En AWS vienen de Secrets Manager.
+services:
+  api-go:
+    build:
+      context: ./api-go
+      target: local
+    ports:
+      - "8080:8080"
+    environment:
+      NODE_API_URL: http://api-node:3000
+      JWT_SECRET: ${JWT_SECRET:?Defina JWT_SECRET en .env (ver .env.example)}
+      API_KEY: ${API_KEY:?Defina API_KEY en .env (ver .env.example)}
+      VERSION: local
+    depends_on:
+      api-node:
+        condition: service_healthy
+
+  api-node:
+    build:
+      context: ./api-node
+      target: local
+    ports:
+      - "3000:3000"
+    environment:
+      JWT_SECRET: ${JWT_SECRET:?Defina JWT_SECRET en .env (ver .env.example)}
+      VERSION: local
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 5s
+      timeout: 3s
+      retries: 10

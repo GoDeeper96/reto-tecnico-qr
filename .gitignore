@@ -1,0 +1,8 @@
+node_modules/
+dist/
+*.zip
+.env
+.env.production
+cdk.out/
+__pycache__/
+cdk-outputs.json

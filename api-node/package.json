@@ -1,0 +1,25 @@
+{
+  "name": "api-node",
+  "version": "1.0.0",
+  "description": "API de estadísticas sobre las matrices Q y R que envía la API en Go",
+  "private": true,
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.1159.0",
+    "@codegenie/serverless-express": "^4.17.1",
+    "cors": "^2.8.6",
+    "express": "^5.3.0",
+    "jsonwebtoken": "^9.0.3"
+  },
+  "devDependencies": {
+    "supertest": "^7.3.1"
+  }
+}
